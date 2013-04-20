@@ -1,0 +1,12 @@
+{application, hundred_doors,
+ [
+  {description, ""},
+  {vsn, "1"},
+  {registered, []},
+  {applications, [
+                  kernel,
+                  stdlib
+                 ]},
+  {mod, { hundred_doors_app, []}},
+  {env, []}
+ ]}.
