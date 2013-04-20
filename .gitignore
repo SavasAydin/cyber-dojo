@@ -2,3 +2,5 @@
 #*
 *#
 anagrams/
+*.beam
+.eunit/
