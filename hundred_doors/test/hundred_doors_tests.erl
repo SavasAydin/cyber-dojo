@@ -27,11 +27,11 @@ open_all_doors_test() ->
     ExpectedOpenDoors = four_open_doors(),
     ?assertEqual(ExpectedOpenDoors, hundred_doors:open_all_doors(FourClosedDoors)).
 
-change_status_to_opposite_test() ->
+change_status_of_each_door_test() ->
     Modulo = 1,
     Doors = [{1, open}, {2, closed}, {3, open}, {4, closed}],
-    ExpectedAfterChange = [{1, closed}, {2, open}, {3, closed}, {4, open}],
-    ?assertEqual(ExpectedAfterChange, hundred_doors:change_every_nth_door(Doors, Modulo)).
+    ChangeStatusOfEachDoor = [{1, closed}, {2, open}, {3, closed}, {4, open}],
+    ?assertEqual(ChangeStatusOfEachDoor, hundred_doors:change_every_nth_door(Doors, Modulo)).
 
 change_status_of_every_second_door_test() ->
     Modulo = 2,
@@ -48,8 +48,15 @@ change_status_of_every_third_door_test() ->
 change_status_of_every_forth_door_test() ->
     Modulo = 4,
     FourClosedDoors = four_open_doors(),
-    OpenEveryThirdDoor = [{1, open}, {2, open}, {3, open}, {4, closed}],
-    ?assertEqual(OpenEveryThirdDoor, hundred_doors:change_every_nth_door(FourClosedDoors, Modulo)).
+    CloseEveryForthDoor = [{1, open}, {2, open}, {3, open}, {4, closed}],
+    ?assertEqual(CloseEveryForthDoor, hundred_doors:change_every_nth_door(FourClosedDoors, Modulo)).
+
+change_status_of_every_fortieth_door_test() ->
+    Modulo = 40,
+    HundredClosedDoors = hundred_doors:create_hundred_doors(closed),
+    OpenEveryFortiethDoor = hundred_doors:change_every_nth_door(HundredClosedDoors, Modulo),
+    DoorNumberToTest = 80,
+    ?assertEqual(open, hundred_doors:get_door_status(DoorNumberToTest, OpenEveryFortiethDoor)).
 
 four_closed_doors() ->
     [{1, closed}, {2, closed}, {3, closed}, {4, closed}].
