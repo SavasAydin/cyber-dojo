@@ -6,6 +6,11 @@ spell_out(Number) ->
     NumberName = get_number_name(Number),
     string:strip(NumberName).
  
+
+get_number_name(Number) when Number >= 31 andalso
+			     Number =< 39 ->
+    Remainder = Number rem 30,
+    get_number_name(30) ++ get_number_name(Remainder);
 get_number_name(Number) when Number >= 21 andalso
 			     Number =< 29 ->
     Remainder = Number rem 20,
@@ -37,6 +42,7 @@ number_names() ->
      {15, "fifteen"},
      {18, "eighteen"},
      {20, "twenty "},
-     {30, "thirty "}
+     {30, "thirty "},
+     {40, "forty "}
     ].
 

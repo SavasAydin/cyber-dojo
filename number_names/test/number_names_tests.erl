@@ -28,7 +28,10 @@ spell_out_a_number_test_() ->
      assert_number("twenty", 20),
      assert_number("twenty one", 21),
      assert_number("twenty six", 26),
-     assert_number("thirty", 30)
+     assert_number("thirty", 30),
+     assert_number("thirty two", 32),
+     assert_number("thirty seven", 37),
+     assert_number("forty", 40)
 
     ].
 
