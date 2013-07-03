@@ -2,8 +2,11 @@
 
 -export([spell_out/1]).
 
-
-
+spell_out(18) ->
+    "eighteen";
+spell_out(Number) when Number >= 16 andalso Number < 20 ->
+    Remainder = Number rem 10,
+    get_number_name(Remainder) ++ "teen";
 spell_out(Number) ->
     get_number_name(Number).
 
@@ -13,6 +16,20 @@ get_number_name(Number) ->
 number_names() ->
     [{0, "zero"},
      {1, "one"},
-     {2, "two"}
+     {2, "two"},
+     {3, "three"},
+     {4, "four"},
+     {5, "five"},
+     {6, "six"},
+     {7, "seven"},
+     {8, "eight"},
+     {9, "nine"},
+     {10, "ten"},
+     {11, "eleven"},
+     {12, "twelve"},
+     {13, "thirteen"},
+     {14, "fourteen"},
+     {15, "fifteen"},
+     {20, "twenty"}
     ].
 
