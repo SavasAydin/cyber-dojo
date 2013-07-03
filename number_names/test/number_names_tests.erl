@@ -3,13 +3,15 @@
 -include_lib("eunit/include/eunit.hrl").
 
 
-spell_out_number_zero_test() ->
-    ?assertEqual("zero", number_names:spell_out(0)).
+spell_out_a_number_test_() ->
+    
+    [assert_number("zero", 0),
+     assert_number("one", 1),
+     assert_number("two", 2)
+    ].
 
-spell_out_number_one_test() ->
-    ?assertEqual("one", number_names:spell_out(1)).
+assert_number(NumberName, Number) ->
+    ?_assertEqual(NumberName, number_names:spell_out(Number)).
 
-spell_out_number_two_test() ->
-    ?assertEqual("two", number_names:spell_out(2)).
 
 

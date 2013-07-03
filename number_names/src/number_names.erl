@@ -2,11 +2,17 @@
 
 -export([spell_out/1]).
 
-spell_out(0) ->
-    "zero";
-spell_out(1) ->
-    "one";
-spell_out(2) ->
-    "two".
 
+
+spell_out(Number) ->
+    get_number_name(Number).
+
+get_number_name(Number) ->
+    proplists:get_value(Number, number_names()).
+
+number_names() ->
+    [{0, "zero"},
+     {1, "one"},
+     {2, "two"}
+    ].
 
