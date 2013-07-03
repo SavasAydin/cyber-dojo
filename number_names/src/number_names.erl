@@ -5,6 +5,12 @@
 spell_out(Number) ->
     get_number_name(Number).
 
+
+
+get_number_name(Number) when Number >= 21 andalso
+			     Number =< 29 ->
+    Remainder = Number rem 20,
+    get_number_name(20) ++ " " ++ get_number_name(Remainder);
 get_number_name(Number) when Number >= 16 andalso 
 			     Number =< 19 andalso 
 			     Number =/= 18 ->
@@ -31,6 +37,7 @@ number_names() ->
      {14, "fourteen"},
      {15, "fifteen"},
      {18, "eighteen"},
-     {20, "twenty"}
+     {20, "twenty"},
+     {30, "thirty"}
     ].
 
