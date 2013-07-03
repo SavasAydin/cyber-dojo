@@ -2,14 +2,14 @@
 
 -export([spell_out/1]).
 
-spell_out(18) ->
-    "eighteen";
-spell_out(Number) when Number >= 16 andalso Number < 20 ->
-    Remainder = Number rem 10,
-    get_number_name(Remainder) ++ "teen";
 spell_out(Number) ->
     get_number_name(Number).
 
+get_number_name(Number) when Number >= 16 andalso 
+			     Number =< 19 andalso 
+			     Number =/= 18 ->
+    Remainder = Number rem 10,
+    get_number_name(Remainder) ++ "teen";
 get_number_name(Number) ->
     proplists:get_value(Number, number_names()).
 
@@ -30,6 +30,7 @@ number_names() ->
      {13, "thirteen"},
      {14, "fourteen"},
      {15, "fifteen"},
+     {18, "eighteen"},
      {20, "twenty"}
     ].
 
