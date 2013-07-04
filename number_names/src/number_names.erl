@@ -14,6 +14,15 @@ get_number_name(Number) ->
 	    get_tens_name(Tens) ++ get_ones_name(Ones)
     end.
 
+parse_base_ten(Number) ->
+    {get_tens_place(Number), get_ones_place(Number)}.
+  
+get_tens_place(Number) ->  
+    Number div 10.
+
+get_ones_place(Number) ->
+    Number rem 10.
+
 is_irregular(Number) ->
     none =/= proplists:lookup(Number, irregular_number_names()).
 
@@ -25,15 +34,6 @@ get_tens_name(Number) ->
 
 get_ones_name(Number) ->
     proplists:get_value(Number, ones_names()).
-
-parse_base_ten(Number) ->
-    {get_tens_place(Number), get_ones_place(Number)}.
-  
-get_tens_place(Number) ->  
-    Number div 10.
-
-get_ones_place(Number) ->
-    Number rem 10.
 
 irregular_number_names() ->
     [{0, "zero"},
