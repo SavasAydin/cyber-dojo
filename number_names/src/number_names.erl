@@ -7,21 +7,16 @@ spell_out(Number) ->
     string:strip(NumberName).    
 
 get_number_name(Number) ->
-    case is_regular(Number) of 
-	irregular ->
+    case is_irregular(Number) of 
+	true ->
 	    get_irregulars_name(Number);
-	regular ->
+	false ->
 	    [{Tens, Ones}] = parse_base_ten(Number),
 	    get_tens_name(Tens) ++ get_ones_name(Ones)
     end.
 
-is_regular(Number) ->
-    case proplists:lookup(Number, irregular_number_names()) of
-	none ->
-	    regular;
-	{Number, _} ->
-	    irregular
-    end.
+is_irregular(Number) ->
+    none =/= proplists:lookup(Number, irregular_number_names()).
 
 parse_base_ten(Number) ->
     [{Tens, Ones} || Tens <- [Number div 10],
