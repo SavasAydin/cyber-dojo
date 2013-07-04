@@ -3,33 +3,37 @@
 -export([spell_out/1]).
 
 spell_out(Number) ->
-    NumberName = get_number_name(Number),    
-    string:strip(NumberName).    
+    string:strip(get_number_name(Number)).    
 
 get_number_name(Number) ->
     case is_irregular(Number) of 
 	true ->
-	    get_irregulars_name(Number);
+	    get_irregular_name(Number);
 	false ->
-	    [{Tens, Ones}] = parse_base_ten(Number),
+	    {Tens, Ones} = parse_base_ten(Number),
 	    get_tens_name(Tens) ++ get_ones_name(Ones)
     end.
 
 is_irregular(Number) ->
     none =/= proplists:lookup(Number, irregular_number_names()).
 
-parse_base_ten(Number) ->
-    [{Tens, Ones} || Tens <- [Number div 10],
-		     Ones <- [Number rem 10]].
-    
-get_irregulars_name(Number) ->
+get_irregular_name(Number) ->
     proplists:get_value(Number, irregular_number_names()).
 
 get_tens_name(Number) ->
-    proplists:get_value(Number, tens_number_names()).
+    proplists:get_value(Number, tens_names()).
 
 get_ones_name(Number) ->
-    proplists:get_value(Number, ones_number_names()).
+    proplists:get_value(Number, ones_names()).
+
+parse_base_ten(Number) ->
+    {get_tens_place(Number), get_ones_place(Number)}.
+  
+get_tens_place(Number) ->  
+    Number div 10.
+
+get_ones_place(Number) ->
+    Number rem 10.
 
 irregular_number_names() ->
     [{0, "zero"},
@@ -44,7 +48,7 @@ irregular_number_names() ->
      {19, "nineteen"}
     ].
    
-ones_number_names() ->
+ones_names() ->
     [{0, ""},
      {1, "one"},
      {2, "two"},
@@ -57,7 +61,7 @@ ones_number_names() ->
      {9, "nine"}
     ].
     
-tens_number_names() ->
+tens_names() ->
     [{0, ""},
      {1, "ten "},
      {2, "twenty "},
