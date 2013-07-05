@@ -2,6 +2,11 @@
 -export([spell_out/1]).
 -define(BASE_TEN, 10).
 
+-record(base_ten, {hundreds,
+		   tens,
+		   ones
+		  }).
+
 spell_out(Number) ->
     NumberNameFun = get_number_fun(Number),
     NumberName = NumberNameFun(Number),
@@ -19,17 +24,27 @@ number_name_funs() ->
     ].
 
 get_regular_number_name(Number) ->
-    {Tens, Ones} = parse_base_ten(Number),
-    get_tens_name(Tens) ++ get_ones_name(Ones).
+    BaseTen = parse_base_ten(Number),
+    get_hundreds_name(BaseTen#base_ten.hundreds) ++
+	get_tens_name(BaseTen#base_ten.tens) ++ 
+	get_ones_name(BaseTen#base_ten.ones).
 
 parse_base_ten(Number) ->
-    {get_tens_place(Number), get_ones_place(Number)}.
-  
-get_tens_place(Number) ->  
-    Number div ?BASE_TEN.
+    {Hundreds, RemainingFromHundreds} = get_base_place(Number, 100), 
+    {Tens, RemainingFromTens} = get_base_place(RemainingFromHundreds, 10),
+    {Ones, _} = get_base_place(RemainingFromTens, 1),
+    #base_ten{hundreds = Hundreds,
+	      tens = Tens,
+	      ones = Ones
+	     }.
 
-get_ones_place(Number) ->
-    Number rem ?BASE_TEN.
+get_base_place(Number, Base) ->  
+    {Number div Base, Number rem Base}.
+  
+get_hundreds_name(0) ->
+    "";
+get_hundreds_name(Number) ->
+    proplists:get_value(Number, ones_names()) ++ "hundred ".
 
 get_tens_name(Number) ->
     proplists:get_value(Number, tens_names()).
@@ -55,15 +70,15 @@ irregular_number_names() ->
    
 ones_names() ->
     [{0, ""},
-     {1, "one"},
-     {2, "two"},
-     {3, "three"},
-     {4, "four"},
-     {5, "five"},
-     {6, "six"},
-     {7, "seven"},
-     {8, "eight"},
-     {9, "nine"}
+     {1, "one "},
+     {2, "two "},
+     {3, "three "},
+     {4, "four "},
+     {5, "five "},
+     {6, "six "},
+     {7, "seven "},
+     {8, "eight "},
+     {9, "nine "}
     ].
     
 tens_names() ->
