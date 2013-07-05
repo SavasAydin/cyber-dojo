@@ -71,6 +71,11 @@ tens_names() ->
      {1, "ten "},
      {2, "twenty "},
      {3, "thirty "},
-     {4, "forty "}
+     {4, "forty "},
+     {5, "fifty "},
+     {6, "sixty "},
+     {7, "seventy "},
+     {8, "eighty "},
+     {9, "ninety "}
     ].
     
