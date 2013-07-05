@@ -1,5 +1,4 @@
 -module(number_names_tests).
-
 -include_lib("eunit/include/eunit.hrl").
 
 spell_out_a_number_test_() ->

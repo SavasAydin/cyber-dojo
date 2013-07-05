@@ -1,7 +1,5 @@
 -module(number_names).
-
 -export([spell_out/1]).
-
 -define(BASE_TEN, 10).
 
 spell_out(Number) ->
