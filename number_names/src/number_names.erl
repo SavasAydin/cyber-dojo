@@ -1,10 +1,6 @@
 -module(number_names).
--export([spell_out/1]).
 
--record(base_ten, {hundreds,
-		   tens,
-		   ones
-		  }).
+-export([spell_out/1]).
 
 spell_out(Number) ->
     NumberNameFun = get_number_fun(Number),
@@ -23,22 +19,13 @@ number_name_funs() ->
     ].
 
 get_regular_number_name(Number) ->
-    BaseTen = parse_base_ten(Number),
-    get_hundreds_name(BaseTen#base_ten.hundreds) ++
-	get_tens_name(BaseTen#base_ten.tens) ++ 
-	get_ones_name(BaseTen#base_ten.ones).
+    [Hundreds, Tens, Ones] = parse_base_ten(Number, 100),
+    get_hundreds_name(Hundreds) ++ get_tens_name(Tens) ++ get_ones_name(Ones).
 
-parse_base_ten(Number) ->
-    [Hundreds, Tens, Ones] = get_base_place(Number, 100), 
-    #base_ten{hundreds = Hundreds,
-	      tens = Tens,
-	      ones = Ones
-	     }.
-
-get_base_place(_, 0) ->
+parse_base_ten(_, 0) ->
     [];
-get_base_place(Number, Base) ->  
-    [Number div Base | get_base_place(Number rem Base, Base div 10)].
+parse_base_ten(Number, Base) ->
+    [Number div Base | parse_base_ten(Number rem Base, Base div 10)].
   
 get_hundreds_name(0) ->
     [];
