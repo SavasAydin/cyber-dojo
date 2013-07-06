@@ -1,6 +1,5 @@
 -module(number_names).
 -export([spell_out/1]).
--define(BASE_TEN, 10).
 
 -record(base_ten, {hundreds,
 		   tens,
@@ -30,27 +29,31 @@ get_regular_number_name(Number) ->
 	get_ones_name(BaseTen#base_ten.ones).
 
 parse_base_ten(Number) ->
-    {Hundreds, RemainingFromHundreds} = get_base_place(Number, 100), 
-    {Tens, RemainingFromTens} = get_base_place(RemainingFromHundreds, 10),
-    {Ones, _} = get_base_place(RemainingFromTens, 1),
+    [Hundreds, Tens, Ones] = get_base_place(Number, 100), 
     #base_ten{hundreds = Hundreds,
 	      tens = Tens,
 	      ones = Ones
 	     }.
 
+get_base_place(_, 0) ->
+    [];
 get_base_place(Number, Base) ->  
-    {Number div Base, Number rem Base}.
+    [Number div Base | get_base_place(Number rem Base, Base div 10)].
   
 get_hundreds_name(0) ->
-    "";
+    [];
 get_hundreds_name(Number) ->
-    proplists:get_value(Number, ones_names()) ++ "hundred ".
+    proplists:get_value(Number, first_nine_natural_number_names()) ++ "hundred ".
 
+get_tens_name(0) ->
+    [];
 get_tens_name(Number) ->
     proplists:get_value(Number, tens_names()).
 
+get_ones_name(0) ->
+    [];
 get_ones_name(Number) ->
-    proplists:get_value(Number, ones_names()).
+    proplists:get_value(Number, first_nine_natural_number_names()).
 
 get_irregular_number_name(Number) ->	
     proplists:get_value(Number, irregular_number_names()).
@@ -68,9 +71,8 @@ irregular_number_names() ->
      {19, "nineteen"}
     ].
    
-ones_names() ->
-    [{0, ""},
-     {1, "one "},
+first_nine_natural_number_names() ->
+    [{1, "one "},
      {2, "two "},
      {3, "three "},
      {4, "four "},
@@ -82,8 +84,7 @@ ones_names() ->
     ].
     
 tens_names() ->
-    [{0, ""},
-     {1, "ten "},
+    [{1, "ten "},
      {2, "twenty "},
      {3, "thirty "},
      {4, "forty "},
