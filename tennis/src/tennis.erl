@@ -3,16 +3,13 @@
 -export([score/2
 	]).
 
-score(FirstPlayer, SecondPlayer) when FirstPlayer >= 3 andalso 
-				      SecondPlayer >= 3 andalso
+score(FirstPlayer, SecondPlayer) when (FirstPlayer+SecondPlayer) >= 6 andalso
 				      FirstPlayer > SecondPlayer ->
     "advantage";
-score(FirstPlayer, SecondPlayer) when FirstPlayer >= 3 andalso 
-				      SecondPlayer >= 3 andalso
+score(FirstPlayer, SecondPlayer) when (FirstPlayer+SecondPlayer) >= 6 andalso
 				      FirstPlayer < SecondPlayer ->
     "advantage";
-score(FirstPlayer, SecondPlayer) when FirstPlayer >= 3 andalso 
-				      SecondPlayer >= 3 andalso
+score(FirstPlayer, SecondPlayer) when (FirstPlayer+SecondPlayer) >= 6 andalso
 				      FirstPlayer == SecondPlayer ->
     "deuce";
 score(FirstPlayer, SecondPlayer) ->
