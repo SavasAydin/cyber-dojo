@@ -27,10 +27,16 @@ score_when_both_players_score_four_test() ->
     ?assertEqual("deuce", tennis:score(4,4)).
 
 score_when_first_player_score_three_and_second_player_scores_four_test() ->
-    ?assertEqual("advantage", tennis:score(3,4)).
+    ?assertEqual({"advantage", "second_player"}, tennis:score(3,4)).
 
 score_when_first_player_score_four_and_second_player_scores_three_test() ->
-    ?assertEqual("advantage", tennis:score(4,3)).
+    ?assertEqual({"advantage", "first_player"}, tennis:score(4,3)).
 
 score_when_first_player_score_five_and_second_player_scores_five_test() ->
     ?assertEqual("deuce", tennis:score(5,5)).
+
+score_when_first_player_score_four_and_second_player_scores_two_test() ->
+    ?assertEqual({"win", "first_player"}, tennis:score(4,2)).
+
+score_when_first_player_score_four_and_second_player_scores_six_test() ->
+    ?assertEqual({"win", "second_player"}, tennis:score(4,6)).
