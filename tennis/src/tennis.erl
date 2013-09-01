@@ -2,21 +2,7 @@
 
 -export([score/2
 	]).
-
-
-%% score(FirstPlayer, SecondPlayer) when (FirstPlayer+SecondPlayer) >= 4 andalso
-%% 				      abs(FirstPlayer-SecondPlayer) > 1 ->
-%%     {"win", who_is_in_the_lead(FirstPlayer, SecondPlayer)};
-%% score(FirstPlayer, SecondPlayer) when (FirstPlayer+SecondPlayer) >= 6 andalso
-%% 				      abs(FirstPlayer-SecondPlayer) == 1 ->
-%%     {"advantage", who_is_in_the_lead(FirstPlayer, SecondPlayer)};
-%% score(FirstPlayer, SecondPlayer) when (FirstPlayer+SecondPlayer) >= 6 andalso
-%% 				      FirstPlayer == SecondPlayer ->
-%%     "deuce";
-%% score(FirstPlayer, SecondPlayer) ->
-%%     {get_point_name(FirstPlayer), get_point_name(SecondPlayer)}.
     
-
 score(F,S) ->
     GameState = get_game_state(F,S),
     print_score_based_game_state(F,S,GameState).
