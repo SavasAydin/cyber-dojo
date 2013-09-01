@@ -3,19 +3,16 @@
 -export([score/2
 	]).
     
-score(F,S) ->
-    GameState = get_game_state(F,S),
-    print_score_based_game_state(F,S,GameState).
+score(FirstPlayerScore,SecondPlayerScore) ->
+    GameState = get_game_state(FirstPlayerScore,SecondPlayerScore),
+    print_score_based_game_state(FirstPlayerScore,SecondPlayerScore,GameState).
 
+print_score_based_game_state(F,S,"running_score") ->
+    {get_point_name(F), get_point_name(S)};
+print_score_based_game_state(_,_,"deuce") ->
+    "deuce";
 print_score_based_game_state(F,S,GameState) ->
-    case GameState of 
-	"other" ->
-	    {get_point_name(F), get_point_name(S)};
-	"deuce" ->
-	    GameState;
-	_ ->
-	    {GameState, who_is_in_the_lead(F,S)}
-    end.
+    {GameState, who_is_in_the_lead(F,S)}.
 
 get_game_state(F,S) ->
     Funs = get_state_funs(),
@@ -26,11 +23,11 @@ get_state_funs() ->
     WinFun = fun(X,Y) -> (X>=4 orelse Y>=4) andalso abs(X-Y)>1 end,
     AdvantageFun = fun(X,Y) -> (X>=3 andalso Y>=3) andalso abs(X-Y)==1 end,
     DeuceFun = fun(X,Y) -> (X>=3 andalso Y>=3) andalso abs(X-Y)==0 end,
-    OtherwiseFun = fun(X,Y) -> (X+Y<6 andalso abs(X-Y)<3) orelse (X+Y)<4 end,
+    RunningFun = fun(X,Y) -> (X+Y<6 andalso abs(X-Y)<3) orelse (X+Y)<4 end,
     [{WinFun, "win"}, 
      {AdvantageFun, "advantage"}, 
      {DeuceFun, "deuce"}, 
-     {OtherwiseFun, "other"}
+     {RunningFun, "running_score"}
     ].
 
 get_point_name(Number) ->
