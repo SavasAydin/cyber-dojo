@@ -8,7 +8,7 @@ spell_out(Number) when Number < 10  ->
     lists:nth(Number+1,first_nine_natural_number_names());
 spell_out(Number) when Number > 10 andalso
 		       Number < 20 ->
-    get_irregular_number_name(Number);
+    lists:nth(Number rem 10,irregular_number_names());
 spell_out(Number) when Number rem 10 == 0 ->
     lists:nth(Number div 10, tens());
 spell_out(Number) when Number < 100 ->
@@ -27,9 +27,6 @@ get_lower_limit_of_(Number) ->
 					  
 first_nine_natural_number_names() ->
     ["zero","one","two","three","four","five","six","seven","eight","nine"].
-
-get_irregular_number_name(Number) ->
-    lists:nth(Number rem 10,irregular_number_names()).
 
 irregular_number_names() ->
     ["eleven",
