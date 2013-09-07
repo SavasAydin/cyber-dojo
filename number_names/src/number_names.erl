@@ -4,8 +4,7 @@
 
 spell_out(0) ->
     "zero";
-spell_out(Number) when Number > 0 andalso 
-		       Number < 10  ->
+spell_out(Number) when Number < 10  ->
     get_natural_number_name(Number);
 spell_out(10) ->
     "ten";
@@ -14,14 +13,21 @@ spell_out(Number) when Number > 10 andalso
     get_irregular_number_name(Number);
 spell_out(20) ->
     "twenty";
-spell_out(Number) when Number > 20 andalso
-		       Number < 30 ->
-    spell_out(20) ++ " " ++ spell_out(Number-20);
 spell_out(30) ->
     "thirty";
-spell_out(Number) when Number > 30 andalso
-			Number < 40 ->
-    spell_out(30) ++ " " ++ spell_out(Number-30).
+spell_out(Number) when Number < 40 ->
+    LowerLimit = get_lower_limit_of_(Number),
+    spell_out(LowerLimit) ++ " " ++ spell_out(Number-LowerLimit).
+
+get_lower_limit_of_(Number) ->
+    Limits = [{20,30},{30,40}],
+    F = fun(X) -> lists:filter(fun({Lower,Upper}) ->
+				       X>Lower andalso X<Upper
+			       end,
+			       Limits)
+	end,
+    [{LowerLimit, _}] = F(Number),
+    LowerLimit.
 					   
 get_natural_number_name(Number) ->
     lists:nth(Number+1,first_nine_natural_number_names()).
