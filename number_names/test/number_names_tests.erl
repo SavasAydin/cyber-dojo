@@ -36,7 +36,13 @@ spell_out_a_number_test_() ->
 	       {"sixty", 60},
 	       {"seventy one", 71},
 	       {"eighty eight", 88},
-	       {"ninety nine", 99}
+	       {"ninety nine", 99},
+	       {"hundred", 100},
+	       {"hundred and one", 101},
+	       {"hundred and eleven", 111},
+	       {"hundred and forty", 140},
+	       {"hundred and seventy two", 172},
+	       {"hundred and ninety nine", 199}
 	      ]).
 
 assert_number({NumberName, Number}) ->

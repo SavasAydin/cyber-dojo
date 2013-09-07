@@ -9,14 +9,22 @@ spell_out(Number) when Number < 10  ->
 spell_out(Number) when Number > 10 andalso
 		       Number < 20 ->
     lists:nth(Number rem 10,irregular_number_names());
-spell_out(Number) when Number rem 10 == 0 ->
-    lists:nth(Number div 10, tens());
 spell_out(Number) when Number < 100 ->
+    case Number rem 10 == 0 of
+	true ->
+	    lists:nth(Number div 10, tens());
+	false ->
+	    LowerLimit = get_lower_limit_of_(Number),
+	    spell_out(LowerLimit) ++ " " ++ spell_out(Number-LowerLimit)
+    end;
+spell_out(100) ->
+    "hundred";
+spell_out(Number) when Number < 200 ->
     LowerLimit = get_lower_limit_of_(Number),
-    spell_out(LowerLimit) ++ " " ++ spell_out(Number-LowerLimit).
+    spell_out(LowerLimit) ++ " and " ++ spell_out(Number-LowerLimit).
 
 get_lower_limit_of_(Number) ->
-    Limits = [{20,30},{30,40},{40,50},{50,60},{60,70},{70,80},{80,90},{90,100}],
+    Limits = [{20,30},{30,40},{40,50},{50,60},{60,70},{70,80},{80,90},{90,100},{100,200}],
     F = fun(X) -> lists:filter(fun({Lower,Upper}) ->
 				       X>Lower andalso X<Upper
 			       end,
