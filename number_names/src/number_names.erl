@@ -5,7 +5,7 @@
 spell_out(0) ->
     "zero";
 spell_out(Number) when Number < 10  ->
-    lists:nth(Number+1,first_nine_natural_number_names());
+    lists:nth(Number,first_nine_natural_number_names());
 spell_out(Number) when Number > 10 andalso
 		       Number < 20 ->
     lists:nth(Number rem 10,irregular_number_names());
@@ -26,7 +26,7 @@ get_lower_limit_of_(Number) ->
     LowerLimit.
 					  
 first_nine_natural_number_names() ->
-    ["zero","one","two","three","four","five","six","seven","eight","nine"].
+    ["one","two","three","four","five","six","seven","eight","nine"].
 
 irregular_number_names() ->
     ["eleven",
