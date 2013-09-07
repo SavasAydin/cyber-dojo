@@ -37,15 +37,21 @@ spell_out_a_number_test_() ->
 	       {"seventy one", 71},
 	       {"eighty eight", 88},
 	       {"ninety nine", 99},
-	       {"hundred", 100},
-	       {"hundred and one", 101},
-	       {"hundred and eleven", 111},
-	       {"hundred and forty", 140},
-	       {"hundred and seventy two", 172},
-	       {"hundred and ninety nine", 199},
+	       {"one hundred", 100},
+	       {"one hundred and one", 101},
+	       {"one hundred and eleven", 111},
+	       {"one hundred and forty", 140},
+	       {"one hundred and seventy two", 172},
+	       {"one hundred and ninety nine", 199},
 	       {"two hundred", 200},
 	       {"two hundred and twelve", 212},
-	       {"two hundred and ninety nine", 299}
+	       {"two hundred and ninety nine", 299},
+	       {"three hundred", 300},
+	       {"three hundred and fifty six", 356},
+	       {"five hundred", 500},
+	       {"seven hundred", 700},
+	       {"nine hundred and one", 901},
+	       {"nine hundred and ninety nine", 999}
 	      ]).
 
 assert_number({NumberName, Number}) ->

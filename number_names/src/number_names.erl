@@ -17,17 +17,20 @@ spell_out(Number) when Number < 100 ->
 	    LowerLimit = get_lower_limit_of_(Number),
 	    spell_out(LowerLimit) ++ " " ++ spell_out(Number-LowerLimit)
     end;
-spell_out(100) ->
-    "hundred";
-spell_out(200) ->
-    "two hundred";
-spell_out(Number) when Number < 300 ->
-    LowerLimit = get_lower_limit_of_(Number),
-    spell_out(LowerLimit) ++ " and " ++ spell_out(Number-LowerLimit).
+spell_out(Number) when Number < 1000 ->
+    case Number rem 100 == 0 of
+	true ->
+	    spell_out(Number div 100) ++ " hundred";
+	false ->
+	    LowerLimit = get_lower_limit_of_(Number),
+	    spell_out(LowerLimit) ++ " and " ++ spell_out(Number-LowerLimit)
+    end.
 
 get_lower_limit_of_(Number) ->
     Limits = [{20,30},{30,40},{40,50},{50,60},{60,70},
-	      {70,80},{80,90},{90,100},{100,200},{200,300}],
+	      {70,80},{80,90},{90,100},{100,200},{200,300},
+	      {300,400},{400,500},{500,600},{600,700},
+	      {700,800},{800,900},{900,1000}],
     F = fun(X) -> lists:filter(fun({Lower,Upper}) ->
 				       X>Lower andalso X<Upper
 			       end,
