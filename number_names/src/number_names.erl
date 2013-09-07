@@ -19,12 +19,15 @@ spell_out(Number) when Number < 100 ->
     end;
 spell_out(100) ->
     "hundred";
-spell_out(Number) when Number < 200 ->
+spell_out(200) ->
+    "two hundred";
+spell_out(Number) when Number < 300 ->
     LowerLimit = get_lower_limit_of_(Number),
     spell_out(LowerLimit) ++ " and " ++ spell_out(Number-LowerLimit).
 
 get_lower_limit_of_(Number) ->
-    Limits = [{20,30},{30,40},{40,50},{50,60},{60,70},{70,80},{80,90},{90,100},{100,200}],
+    Limits = [{20,30},{30,40},{40,50},{50,60},{60,70},
+	      {70,80},{80,90},{90,100},{100,200},{200,300}],
     F = fun(X) -> lists:filter(fun({Lower,Upper}) ->
 				       X>Lower andalso X<Upper
 			       end,
@@ -35,6 +38,9 @@ get_lower_limit_of_(Number) ->
 					  
 first_nine_natural_number_names() ->
     ["one","two","three","four","five","six","seven","eight","nine"].
+
+tens() ->    
+    ["ten","twenty","thirty","forty","fifty","sixty","seventy","eighty","ninety"].
 
 irregular_number_names() ->
     ["eleven",
@@ -48,14 +54,3 @@ irregular_number_names() ->
      "nineteen"
     ].
 
-tens() ->    
-    ["ten",
-     "twenty",
-     "thirty",
-     "forty",
-     "fifty",
-     "sixty",
-     "seventy",
-     "eighty",
-     "ninety"
-    ].
