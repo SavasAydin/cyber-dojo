@@ -40,15 +40,6 @@ spell_out(Number) when Number < 1000000 ->
 get_lower_base_limit(Number, Base) ->
     (Number div Base) * Base.
 
-%% get_lower_ten_limit(Number) ->
-%%     (Number div 10) * 10.
-
-%% get_lower_hundred_limit(Number) ->
-%%     (Number div 100) * 100.
-
-%% get_lower_thousand_limit(Number) ->
-%%     (Number div 1000) * 1000.
-
 first_nine_natural_number_names() ->
     ["zero","one","two","three","four","five","six","seven","eight","nine"].
 
