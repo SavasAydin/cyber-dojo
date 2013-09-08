@@ -4,11 +4,11 @@
 
 -define(WHITESPACE, " ").
 -define(AND, " and ").
+-define(HUNDRED, " hundred").
+-define(THOUSAND, " thousand").
 
-spell_out(0) ->
-    "zero";
 spell_out(Number) when Number < 10  ->
-    lists:nth(Number,first_nine_natural_number_names());
+    lists:nth(Number+1,first_nine_natural_number_names());
 spell_out(Number) when Number > 10 andalso
 		       Number < 20 ->
     lists:nth(Number rem 10,irregular_number_names());
@@ -17,37 +17,40 @@ spell_out(Number) when Number < 100 ->
 	true ->
 	    lists:nth(Number div 10, tens());
 	false ->
-	    LowerLimit = get_lower_ten_limit(Number),
-	    spell_out(LowerLimit) ++ " " ++ spell_out(Number-LowerLimit)
+	    LowerTen = get_lower_base_limit(Number, 10),
+	    spell_out(LowerTen) ++ ?WHITESPACE ++ spell_out(Number-LowerTen)
     end;
 spell_out(Number) when Number < 1000 ->
     case Number rem 100 == 0 of
 	true ->
-	    spell_out(Number div 100) ++ " hundred";
+	    spell_out(Number div 100) ++ ?HUNDRED;
 	false ->
-	    LowerHundred = get_lower_hundred_limit(Number),
-	    spell_out(LowerHundred) ++ " and " ++ spell_out(Number-LowerHundred) 
+	    LowerHundred = get_lower_base_limit(Number, 100),
+	    spell_out(LowerHundred) ++ ?AND ++ spell_out(Number-LowerHundred) 
     end;
-spell_out(Number) ->
+spell_out(Number) when Number < 1000000 ->
     case Number rem 1000 == 0 of
 	true ->
-	    spell_out(Number div 1000) ++ " thousand";
+	    spell_out(Number div 1000) ++ ?THOUSAND;
 	false ->
-	    LowerThousand = get_lower_thousand_limit(Number),
-	    spell_out(LowerThousand) ++ " " ++ spell_out(Number-LowerThousand) 
+	    LowerThousand = get_lower_base_limit(Number, 1000),
+	    spell_out(LowerThousand) ++ ?WHITESPACE ++ spell_out(Number-LowerThousand) 
     end.
 
-get_lower_ten_limit(Number) ->
-    (Number div 10) * 10.
+get_lower_base_limit(Number, Base) ->
+    (Number div Base) * Base.
 
-get_lower_hundred_limit(Number) ->
-    (Number div 100) * 100.
+%% get_lower_ten_limit(Number) ->
+%%     (Number div 10) * 10.
 
-get_lower_thousand_limit(Number) ->
-    (Number div 1000) * 1000.
+%% get_lower_hundred_limit(Number) ->
+%%     (Number div 100) * 100.
+
+%% get_lower_thousand_limit(Number) ->
+%%     (Number div 1000) * 1000.
 
 first_nine_natural_number_names() ->
-    ["one","two","three","four","five","six","seven","eight","nine"].
+    ["zero","one","two","three","four","five","six","seven","eight","nine"].
 
 tens() ->    
     ["ten","twenty","thirty","forty","fifty","sixty","seventy","eighty","ninety"].
