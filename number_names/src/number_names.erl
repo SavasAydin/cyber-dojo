@@ -2,6 +2,9 @@
 
 -export([spell_out/1]).
 
+-define(WHITESPACE, " ").
+-define(AND, " and ").
+
 spell_out(0) ->
     "zero";
 spell_out(Number) when Number < 10  ->
@@ -14,37 +17,35 @@ spell_out(Number) when Number < 100 ->
 	true ->
 	    lists:nth(Number div 10, tens());
 	false ->
-	    spell_tens(Number)
+	    LowerLimit = get_lower_ten_limit(Number),
+	    spell_out(LowerLimit) ++ " " ++ spell_out(Number-LowerLimit)
     end;
 spell_out(Number) when Number < 1000 ->
     case Number rem 100 == 0 of
 	true ->
 	    spell_out(Number div 100) ++ " hundred";
 	false ->
-	    spell_hundreds(Number)
+	    LowerHundred = get_lower_hundred_limit(Number),
+	    spell_out(LowerHundred) ++ " and " ++ spell_out(Number-LowerHundred) 
+    end;
+spell_out(Number) ->
+    case Number rem 1000 == 0 of
+	true ->
+	    spell_out(Number div 1000) ++ " thousand";
+	false ->
+	    LowerThousand = get_lower_thousand_limit(Number),
+	    spell_out(LowerThousand) ++ " " ++ spell_out(Number-LowerThousand) 
     end.
 
-spell_tens(Number) ->
-    TenLimits = [{20,30},{30,40},{40,50},{50,60},
-		 {60,70},{70,80},{80,90},{90,100}],
-    LowerLimit = get_lower_limit(Number, TenLimits),
-    spell_out(LowerLimit) ++ " " ++ spell_out(Number-LowerLimit).
+get_lower_ten_limit(Number) ->
+    (Number div 10) * 10.
 
-spell_hundreds(Number) ->
-    HundredLimits = [{100,200},{200,300},{300,400},{400,500},{500,600},
-		     {600,700},{700,800},{800,900},{900,1000}],
-    LowerLimit = get_lower_limit(Number, HundredLimits),
-    spell_out(LowerLimit) ++ " and " ++ spell_out(Number-LowerLimit).
+get_lower_hundred_limit(Number) ->
+    (Number div 100) * 100.
 
-get_lower_limit(Number, Limits) ->
-    F = fun(X) -> 
-		lists:filter(fun({Lower,Upper}) -> X>Lower andalso 
-						       X<Upper end,
-			     Limits)
-	end,
-    [{LowerLimit, _}] = F(Number),
-    LowerLimit.
-					  
+get_lower_thousand_limit(Number) ->
+    (Number div 1000) * 1000.
+
 first_nine_natural_number_names() ->
     ["one","two","three","four","five","six","seven","eight","nine"].
 

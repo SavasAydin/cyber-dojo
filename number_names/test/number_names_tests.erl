@@ -51,7 +51,12 @@ spell_out_a_number_test_() ->
 	       {"five hundred", 500},
 	       {"seven hundred", 700},
 	       {"nine hundred and one", 901},
-	       {"nine hundred and ninety nine", 999}
+	       {"nine hundred and ninety nine", 999},
+	       {"one thousand", 1000},
+	       {"one thousand one", 1001},
+	       {"one thousand one hundred and eleven", 1111},
+	       {"one thousand two hundred and thirty four", 1234},
+	       {"two thousand", 2000}
 	      ]).
 
 assert_number({NumberName, Number}) ->
