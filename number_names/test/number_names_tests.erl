@@ -56,7 +56,10 @@ spell_out_a_number_test_() ->
 	       {"one thousand one", 1001},
 	       {"one thousand one hundred and eleven", 1111},
 	       {"one thousand two hundred and thirty four", 1234},
-	       {"two thousand", 2000}
+	       {"two thousand", 2000},
+	       {"three thousand", 3000},
+	       {"twelve thousand six hundred and nine", 12609},
+	       {"five hundred and twelve thousand six hundred and seven", 512607}
 	      ]).
 
 assert_number({NumberName, Number}) ->
@@ -64,5 +67,4 @@ assert_number({NumberName, Number}) ->
 	    ?assertEqual(NumberName, number_names:spell_out(Number))
     end.
 
-
-
+	       
