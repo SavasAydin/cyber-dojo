@@ -2,12 +2,6 @@
 
 -export([spell_out/1]).
 
--define(WHITESPACE, " ").
--define(AND, " and ").
--define(HUNDRED, " hundred").
--define(THOUSAND, " thousand").
--define(COMMA, ", ").
-
 spell_out(Number) when Number < 10  ->
     lists:nth(Number+1,first_nine_natural_number_names());
 spell_out(Number) when Number > 10 andalso
@@ -19,23 +13,23 @@ spell_out(Number) when Number < 100 ->
 	    lists:nth(Number div 10, tens());
 	false ->
 	    LowerTen = get_lower_base_limit(Number, 10),
-	    spell_out(LowerTen) ++ ?WHITESPACE ++ spell_out(Number-LowerTen)
+	    spell_out(LowerTen) ++ " " ++ spell_out(Number-LowerTen)
     end;
 spell_out(Number) when Number < 1000 ->
     case Number rem 100 == 0 of
 	true ->
-	    spell_out(Number div 100) ++ ?HUNDRED;
+	    spell_out(Number div 100) ++ " hundred";
 	false ->
 	    LowerHundred = get_lower_base_limit(Number, 100),
-	    spell_out(LowerHundred) ++ ?AND ++ spell_out(Number-LowerHundred) 
+	    spell_out(LowerHundred) ++ " and " ++ spell_out(Number-LowerHundred) 
     end;
 spell_out(Number) when Number < 1000000 ->
     case Number rem 1000 == 0 of
 	true ->
-	    spell_out(Number div 1000) ++ ?THOUSAND;
+	    spell_out(Number div 1000) ++ " thousand";
 	false ->
 	    LowerThousand = get_lower_base_limit(Number, 1000),
-	    spell_out(LowerThousand) ++ ?COMMA ++ spell_out(Number-LowerThousand) 
+	    spell_out(LowerThousand) ++ ", " ++ spell_out(Number-LowerThousand) 
     end.
 
 get_lower_base_limit(Number, Base) ->
