@@ -6,6 +6,7 @@
 -define(AND, " and ").
 -define(HUNDRED, " hundred").
 -define(THOUSAND, " thousand").
+-define(COMMA, ", ").
 
 spell_out(Number) when Number < 10  ->
     lists:nth(Number+1,first_nine_natural_number_names());
@@ -34,7 +35,7 @@ spell_out(Number) when Number < 1000000 ->
 	    spell_out(Number div 1000) ++ ?THOUSAND;
 	false ->
 	    LowerThousand = get_lower_base_limit(Number, 1000),
-	    spell_out(LowerThousand) ++ ?WHITESPACE ++ spell_out(Number-LowerThousand) 
+	    spell_out(LowerThousand) ++ ?COMMA ++ spell_out(Number-LowerThousand) 
     end.
 
 get_lower_base_limit(Number, Base) ->
