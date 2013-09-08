@@ -12,27 +12,39 @@ spell_out(Number) when Number < 100 ->
 	true ->
 	    lists:nth(Number div 10, tens());
 	false ->
-	    LowerTen = get_lower_base_limit(Number, 10),
-	    spell_out(LowerTen) ++ " " ++ spell_out(Number-LowerTen)
-    end;
-spell_out(Number) when Number < 1000 ->
-    case Number rem 100 == 0 of
-	true ->
-	    spell_out(Number div 100) ++ " hundred";
-	false ->
-	    LowerHundred = get_lower_base_limit(Number, 100),
-	    spell_out(LowerHundred) ++ " and " ++ spell_out(Number-LowerHundred) 
+	    GreatestTen = get_greatest_limit(Number, 10),
+	    spell_out(GreatestTen) ++ " " ++ spell_out(Number-GreatestTen)
     end;
 spell_out(Number) when Number < 1000000 ->
-    case Number rem 1000 == 0 of
-	true ->
-	    spell_out(Number div 1000) ++ " thousand";
+    LowerBase = get_lower_base_of_(Number),
+    case Number rem LowerBase == 0 of
+	true -> 
+	    spell_out(Number div LowerBase) ++ get_lower_base_name(LowerBase);
 	false ->
-	    LowerThousand = get_lower_base_limit(Number, 1000),
-	    spell_out(LowerThousand) ++ ", " ++ spell_out(Number-LowerThousand) 
+	    GreatestLimit = get_greatest_limit(Number, LowerBase),
+	    spell_out(GreatestLimit) ++ 
+		get_lower_base_conjuction(LowerBase) ++ 
+		spell_out(Number-GreatestLimit) 
     end.
 
-get_lower_base_limit(Number, Base) ->
+get_lower_base_of_(Number) ->
+    F = fun(X) -> lists:filter(fun({L,U}) -> X>=L andalso X<U end,
+			       [{100,1000},{1000,1000000}])
+	end,
+    [{LowerBase,_}] = F(Number),
+    LowerBase.
+    
+get_lower_base_name(100) ->
+    " hundred";
+get_lower_base_name(1000) ->
+    " thousand".
+
+get_lower_base_conjuction(100) ->
+    " and ";
+get_lower_base_conjuction(1000) ->
+    ", ".
+
+get_greatest_limit(Number, Base) ->
     (Number div Base) * Base.
 
 first_nine_natural_number_names() ->
