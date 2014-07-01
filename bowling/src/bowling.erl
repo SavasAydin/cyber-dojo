@@ -1,48 +1,66 @@
 -module(bowling).
 
--export([score/1]).
-	
-score(Line) ->	
-    Frames = get_frames(Line),
-    Concatenated = concatenate(Frames),
-    Balls = get_balls(Concatenated),
-    Scores = calculate(Balls),
-    lists:sum(Scores).
+-export([score/1,
+	 parse_line/1,
+	 calculate_points/1]).
 
-get_frames(Line) ->
-    string:tokens(Line,"|").
+score(Line) ->
+    Parsed = parse_line(Line),
+    Points = calculate_points(Parsed),
+    lists:sum(Points).
+    
+parse_line(Line) ->
+    Tokens = string:tokens(Line,"|"),
+    lists:map(fun parse_frame/1,Tokens).
 
-concatenate([]) ->
-    "";
-concatenate([Frame|T]) ->
-    Frame ++ concatenate(T).
+parse_frame(Frame) ->
+    lists:map(fun translate_ball/1, Frame).
 
-get_balls([]) ->
+translate_ball($-) ->
+    miss;
+translate_ball($X) ->
+    strike;
+translate_ball($/) ->
+    spare;
+translate_ball(X) ->
+    list_to_integer([X]).
+	  
+calculate_points([]) ->
     [];
-get_balls([$X|T]) ->
-    [{strike,10}|get_balls(T)];
-get_balls([F,$/|T]) ->
-    [{list_to_integer([F]),spare}|get_balls(T)];
-get_balls([Ball|T]) ->
-    [list_to_integer([Ball])|get_balls(T)].
+calculate_points([[_,spare],Next|Frames]) when Frames /= [] ->
+    NextBall = get_next_ball([Next|Frames]),
+    [get_points([spare|NextBall]) | calculate_points([Next|Frames])];
+calculate_points([[_,spare],Bonus])  ->
+    [get_points([spare]) | calculate_points([Bonus])];
+calculate_points([[strike],Next|Frames]) when Frames /= [] ->
+    NextTwo = get_next_two_balls([Next|Frames]),
+    [get_points([strike|NextTwo])  | calculate_points([Next|Frames])];
+calculate_points([[strike],Bonus])  ->
+    [get_points([strike]) | calculate_points([Bonus])];
+calculate_points([Frame|Frames]) ->
+    [get_points(Frame) | calculate_points(Frames)].
 
-calculate([{strike,_}|T]) ->
-    [10 + next_two_balls(T) | calculate(T)];
-calculate([{_,spare}|T]) ->
-    [10 + next_ball(T) | calculate(T)];
-calculate(A) ->
-    A.
+get_points(Frame) ->
+    Points = [get_point(X) || X<-Frame],
+    lists:sum(Points).
 
-next_two_balls([{strike,10},S|_]) ->
-    10+S;    
-next_two_balls([{_,spare}|_]) ->
+get_point(miss) ->
+    0;
+get_point(strike) ->
     10;
-next_two_balls([F,S|_]) ->
-    F+S.
-
-next_ball([{strike,_}|_]) ->
+get_point(spare) ->
     10;
-next_ball([{F,spare}|_]) ->
-    F;
-next_ball([F|_])->
-    F.
+get_point(X) ->
+    X.
+
+get_next_two_balls([[strike]|Frames]) ->
+    [strike | get_next_ball(Frames)];
+get_next_two_balls([[_,spare]|_]) ->
+    [spare];
+get_next_two_balls([[A,B]|_]) ->
+    [A,B].
+
+get_next_ball([[A]|_]) ->
+    [A];
+get_next_ball([[A,_]|_]) ->
+    [A].
