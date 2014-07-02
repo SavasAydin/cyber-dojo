@@ -98,12 +98,12 @@ calculate_points_for_each_frame_in_a_line_that_has_a_spare_test() ->
     Res = bowling:calculate_points(Frames),
     ?assertEqual([11,2,2,2,2,2,2,2,2,2],Res).
 
-calculate_points_for_each_frame_in_a_line_that_strike_has_followed_by_a_miss_and_spare__test() ->
+calculate_points_for_each_frame_in_a_line_that_strike_has_followed_by_a_miss_and_spare_test() ->
     Frames = [[strike],[miss,spare],[1,1],[1,1],[1,1],[1,1],[1,1],[1,1],[1,1],[1,1]],
     Res = bowling:calculate_points(Frames),
     ?assertEqual([20,11,2,2,2,2,2,2,2,2],Res).
 
-calculate_points_for_each_frame_in_a_line_that_strike_has_followed_by_a_spare__test() ->
+calculate_points_for_each_frame_in_a_line_that_strike_has_followed_by_a_spare_test() ->
     Frames = [[strike],[1,spare],[1,1],[1,1],[1,1],[1,1],[1,1],[1,1],[1,1],[1,1]],
     Res = bowling:calculate_points(Frames),
     ?assertEqual([20,11,2,2,2,2,2,2,2,2],Res).

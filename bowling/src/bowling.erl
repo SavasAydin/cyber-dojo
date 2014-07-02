@@ -53,14 +53,12 @@ get_point(spare) ->
 get_point(X) ->
     X.
 
-get_next_two_balls([[strike]|Frames]) ->
-    [strike | get_next_ball(Frames)];
+get_next_two_balls([[strike]|Balls]) ->
+    [strike | get_next_ball(Balls)];
 get_next_two_balls([[_,spare]|_]) ->
     [spare];
 get_next_two_balls([[A,B]|_]) ->
     [A,B].
 
-get_next_ball([[A]|_]) ->
-    [A];
-get_next_ball([[A,_]|_]) ->
-    [A].
+get_next_ball([Balls|_]) ->
+    [hd(Balls)].
