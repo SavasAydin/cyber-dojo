@@ -11,15 +11,14 @@ parse_frames(Frames) ->
 
 to_hits([], Res) ->
     lists:reverse(Res);
-to_hits([[X, $-] | T], Acc) ->
-    Hit = {list_to_integer([X]), 0},
-    to_hits(T, [Hit | Acc]);
-to_hits([[$-, Y] | T], Acc) ->
-    Hit = {0, list_to_integer([Y])},
-    to_hits(T, [Hit | Acc]);
-to_hits([[X, Y] | T], Acc) ->
-    Hit = {list_to_integer([X]), list_to_integer([Y])},
+to_hits([H | T], Acc) ->
+    Hit = [ convert(Ball) || Ball <- H],
     to_hits(T, [Hit | Acc]).
 
+convert($-) ->
+    0;
+convert(X) ->
+    list_to_integer([X]).
+
 calculate(Hits) ->
-    lists:sum([ X+Y || {X, Y} <- Hits]).
+    lists:sum([ X+Y || [X, Y] <- Hits]).
