@@ -2,23 +2,30 @@
 -export([score/1]).
 
 score(Frames) ->
-    Hits = parse_frames(Frames),
-    calculate(Hits).
+    Tokens = parse_frames(Frames),
+    Hits = to_hits(Tokens),
+    calculate(Hits, 0).
 
 parse_frames(Frames) ->
-    Tokens = string:tokens(Frames, "|"),
-    to_hits(Tokens, []).
+    lists:flatten(string:tokens(Frames, "|")).
 
-to_hits([], Res) ->
-    lists:reverse(Res);
-to_hits([H | T], Acc) ->
-    Hit = [ convert(Ball) || Ball <- H],
-    to_hits(T, [Hit | Acc]).
+to_hits(Tokens) ->
+    [to_hit(Ball) || Ball <- Tokens].
 
-convert($-) ->
-    0;
-convert(X) ->
-    list_to_integer([X]).
+to_hit(Ball) ->
+    try list_to_integer([Ball]) of
+        Hit ->
+            Hit
+    catch
+        _:_ ->
+            Ball
+    end.
 
-calculate(Hits) ->
-    lists:sum([ X+Y || [X, Y] <- Hits]).
+calculate([], Score) ->
+    Score;
+calculate([_, $/, Next | Balls], Score) ->
+    calculate([Next | Balls], Score+10+Next);
+calculate([$- | Balls], Score) ->
+    calculate(Balls, Score);
+calculate([Ball | Balls], Score) ->
+    calculate(Balls, Score+Ball).
