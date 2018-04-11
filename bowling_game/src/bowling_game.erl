@@ -23,9 +23,24 @@ to_hit(Ball) ->
 
 calculate([], Score) ->
     Score;
-calculate([_, $/, Next | Balls], Score) ->
-    calculate([Next | Balls], Score+10+Next);
+calculate([$X | Balls], Score) ->
+    Extra = get_next_two(Balls),
+    calculate(Balls, Score+10+Extra);
+calculate([_, $/ | Balls], Score) ->
+    Extra = get_next(Balls),
+    calculate(Balls, Score+10+Extra);
 calculate([$- | Balls], Score) ->
     calculate(Balls, Score);
 calculate([Ball | Balls], Score) ->
     calculate(Balls, Score+Ball).
+
+get_next([H|_]) ->
+    points(H).
+
+get_next_two([F, S | _]) ->
+    points(F) + points(S).
+
+points($X) ->
+    10;
+points(X) ->
+    X.
