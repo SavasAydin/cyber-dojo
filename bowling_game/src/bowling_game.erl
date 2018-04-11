@@ -12,14 +12,14 @@ parse_frames(Frames) ->
 to_hits(Tokens) ->
     [to_hit(Ball) || Ball <- Tokens].
 
+to_hit($-) ->
+    0;
+to_hit($X) ->
+    $X;
+to_hit($/) ->
+    $/;
 to_hit(Ball) ->
-    try list_to_integer([Ball]) of
-        Hit ->
-            Hit
-    catch
-        _:_ ->
-            Ball
-    end.
+    list_to_integer([Ball]).
 
 calculate([], Score) ->
     Score;
@@ -29,14 +29,14 @@ calculate([$X | Balls], Score) ->
 calculate([_, $/ | Balls], Score) ->
     Extra = get_next(Balls),
     calculate(Balls, Score+10+Extra);
-calculate([$- | Balls], Score) ->
-    calculate(Balls, Score);
 calculate([Ball | Balls], Score) ->
     calculate(Balls, Score+Ball).
 
 get_next([H|_]) ->
     points(H).
 
+get_next_two([_, $/ | _]) ->
+    10;
 get_next_two([F, S | _]) ->
     points(F) + points(S).
 

@@ -25,3 +25,8 @@ ten_strikes_on_the_first_ball_of_nine_frames_test() ->
     TenFrames = "X|X|X|X|X|X|X|X|X|54||",
     Res = bowling_game:score(TenFrames),
     ?assertEqual(263, Res).
+
+mix_of_spare_and_strike_test() ->
+    TenFrames = "5/|X|5/|X|5/|-/|X|-/|X|--||",
+    Res = bowling_game:score(TenFrames),
+    ?assertEqual(160, Res).
